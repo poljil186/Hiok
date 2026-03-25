@@ -1,0 +1,105 @@
+local Players = game:GetService("Players")
+local RunService = game:GetService("RunService")
+local lp = Players.LocalPlayer
+
+-- --- CONFIGURACIONES ---
+local _G_HB = false
+local _G_AH = false
+
+-- --- ESPERAR CARGA SEGURA ---
+local pGui = lp:WaitForChild("PlayerGui", 10)
+if not pGui then return end
+
+-- Limpiar si ya lo ejecutaste antes
+if pGui:FindFirstChild("MenuSlap") then
+    pGui.MenuSlap:Destroy()
+end
+
+-- --- CREAR INTERFAZ SIMPLE ---
+local sg = Instance.new("ScreenGui")
+sg.Name = "MenuSlap"
+sg.Parent = pGui
+sg.ResetOnSpawn = false
+
+-- Botón principal
+local btnMenu = Instance.new("TextButton", sg)
+btnMenu.Size = UDim2.new(0, 100, 0, 45)
+btnMenu.Position = UDim2.new(0, 10, 0.4, 0)
+btnMenu.BackgroundColor3 = Color3.fromRGB(0, 120, 255)
+btnMenu.Text = "ABRIR"
+btnMenu.TextColor3 = Color3.new(1, 1, 1)
+btnMenu.Font = Enum.Font.GothamBold
+btnMenu.Draggable = true -- Para que lo muevas
+Instance.new("UICorner", btnMenu)
+
+-- Panel que se despliega
+local marco = Instance.new("Frame", sg)
+marco.Size = UDim2.new(0, 120, 0, 100)
+marco.Position = UDim2.new(0, 10, 0.4, 55)
+marco.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+marco.Visible = false
+Instance.new("UICorner", marco)
+
+-- Botón Hitbox
+local btnHB = Instance.new("TextButton", marco)
+btnHB.Size = UDim2.new(0.9, 0, 0, 40)
+btnHB.Position = UDim2.new(0.05, 0, 0.05, 0)
+btnHB.BackgroundColor3 = Color3.fromRGB(150, 0, 0)
+btnHB.Text = "HITBOX: OFF"
+btnHB.TextColor3 = Color3.new(1, 1, 1)
+btnHB.Font = Enum.Font.GothamBold
+Instance.new("UICorner", btnHB)
+
+-- Botón Anti-Hit
+local btnAH = Instance.new("TextButton", marco)
+btnAH.Size = UDim2.new(0.9, 0, 0, 40)
+btnAH.Position = UDim2.new(0.05, 0, 0.5, 0)
+btnAH.BackgroundColor3 = Color3.fromRGB(80, 0, 150)
+btnAH.Text = "ANTI-HIT: OFF"
+btnAH.TextColor3 = Color3.new(1, 1, 1)
+btnAH.Font = Enum.Font.GothamBold
+Instance.new("UICorner", btnAH)
+
+-- --- LÓGICA DE LOS BOTONES ---
+btnMenu.MouseButton1Click:Connect(function()
+    marco.Visible = not marco.Visible
+    btnMenu.Text = marco.Visible and "CERRAR" or "ABRIR"
+    btnMenu.BackgroundColor3 = marco.Visible and Color3.fromRGB(200, 50, 50) or Color3.fromRGB(0, 120, 255)
+end)
+
+btnHB.MouseButton1Click:Connect(function()
+    _G_HB = not _G_HB
+    btnHB.Text = _G_HB and "HITBOX: ON" or "HITBOX: OFF"
+    btnHB.BackgroundColor3 = _G_HB and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(150, 0, 0)
+end)
+
+btnAH.MouseButton1Click:Connect(function()
+    _G_AH = not _G_AH
+    btnAH.Text = _G_AH and "ANTI-HIT: ON" or "ANTI-HIT: OFF"
+    btnAH.BackgroundColor3 = _G_AH and Color3.fromRGB(130, 0, 255) or Color3.fromRGB(80, 0, 150)
+end)
+
+-- --- LÓGICA DE LOS HACKS (ARREGLADA) ---
+RunService.Stepped:Connect(function()
+    -- 1. Hitbox
+    if _G_HB then
+        for _, p in pairs(Players:GetPlayers()) do
+            if p ~= lp and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                local eRoot = p.Character.HumanoidRootPart
+                eRoot.Size = Vector3.new(30, 30, 30)
+                eRoot.Transparency = 0.8
+                eRoot.CanCollide = false
+            end
+        end
+    end
+    
+    -- 2. Anti-Hit (Ya no te frena al caminar)
+    if _G_AH and lp.Character and lp.Character:FindFirstChild("HumanoidRootPart") then
+        local root = lp.Character.HumanoidRootPart
+        -- Solo se activa si la velocidad es gigante (como un golpe)
+        if root.Velocity.Magnitude > 150 then 
+            -- Te frena en seco para no salir volando
+            root.Velocity = Vector3.new(0, 0, 0) 
+        end
+    end
+end)
