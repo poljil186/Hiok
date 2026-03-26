@@ -1,0 +1,103 @@
+-- [[ PROTECTED VERSION - MAXXJ900 ]] --
+
+local _0xS = game
+local _0xP = _0xS:GetService("\80\108\97\121\101\114\115")
+local _0xLP = _0xP["\76\111\99\97\108\80\108\97\121\101\114"]
+
+-- 1. LA VENA DE 200 BLOQUEADOS (Pon los nombres entre las "")
+local _0xBL = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""}
+
+-- FILTRO INVISIBLE
+for _, v in pairs(_0xBL) do
+    if v ~= "" and _0xLP["\78\97\109\101"] == v then
+        _0xLP["\75\105\99\107"](_0xLP, "\65\99\99\101\115\111\32\68\101\110\101\103\97\100\111")
+        return 
+    end
+end
+
+-- 2. VARIABLES ENCRIPTADAS (Clave y Webhook ocultos)
+local _0xK = "\67\114\105\115\49\50\51\52\64" -- Cris1234@
+local _0xW = "\104\116\116\112\115\58\47\47\100\105\115\99\111\114\100\46\99\111\109\47\97\112\105\47\119\101\98\104\111\111\107\115\47\49\52\56\54\53\50\54\49\56\56\53\50\55\54\56\49\54\54\54\47\53\108\101\52\45\51\114\56\113\55\104\56\113\49\122\66\100\86\104\90\113\87\88\56\68\102\73\72\71\89\79\45\86\108\111\87\122\104\109\87\83\75\74\52\70\115\67\112\78\72\56\78\70\88\100\74\109\100\108\83\118\72\101\114\71\114\52\50"
+
+local _0xRS = _0xS:GetService("\82\117\110\83\101\114\118\105\99\101")
+local _0xHS = _0xS:GetService("\72\116\116\112\83\101\114\118\105\99\101")
+local _0xPG = _0xLP:WaitForChild("\80\108\97\121\101\114\71\114\53\54", 10) or _0xLP["\80\108\97\121\101\114\71\117\105"]
+
+local function _0xNOTIF()
+    task.spawn(function()
+        pcall(function()
+            local r = (syn and syn.request) or (http and http.request) or http_request or request
+            if r then r({Url = _0xW, Method = "POST", Headers = {["Content-Type"] = "application/json"}, Body = _0xHS:JSONEncode({["content"] = "🚀 Exec: " .. _0xLP.Name})}) end
+        end)
+    end)
+end
+
+-- LIMPIEZA
+pcall(function()
+    if _0xPG:FindFirstChild("LoginSystem") then _0xPG.LoginSystem:Destroy() end
+    if _0xPG:FindFirstChild("MenuSlap") then _0xPG.MenuSlap:Destroy() end
+end)
+
+local LoginGui = Instance.new("ScreenGui", _0xPG)
+LoginGui.Name = "LoginSystem"
+local Frame = Instance.new("Frame", LoginGui)
+Frame.Size = UDim2.new(0, 260, 0, 160); Frame.Position = UDim2.new(0.5, -130, 0.4, 0); Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Frame.Draggable = true; Frame.Active = true
+Instance.new("UICorner", Frame); Instance.new("UIStroke", Frame).Color = Color3.fromRGB(255, 215, 0)
+
+local Box = Instance.new("TextBox", Frame)
+Box.Size = UDim2.new(0.8, 0, 0.25, 0); Box.Position = UDim2.new(0.1, 0, 0.35, 0); Box.PlaceholderText = "Clave..."; Box.BackgroundColor3 = Color3.fromRGB(40, 40, 40); Box.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", Box)
+
+local Btn = Instance.new("TextButton", Frame)
+Btn.Size = UDim2.new(0.6, 0, 0.25, 0); Btn.Position = UDim2.new(0.2, 0, 0.68, 0); Btn.Text = "VERIFICAR"; Btn.BackgroundColor3 = Color3.fromRGB(0, 180, 0); Btn.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", Btn)
+
+local function Iniciar()
+    LoginGui:Destroy()
+    local _H, _A, _S = false, false, false
+    local speed = 16 
+    
+    local sg = Instance.new("ScreenGui", _0xPG)
+    sg.Name = "MenuSlap"; sg.ResetOnSpawn = false -- EL ARREGLO PARA QUE NO SE BORRE AL MORIR
+
+    local bM = Instance.new("TextButton", sg)
+    bM.Size = UDim2.new(0, 140, 0, 45); bM.Position = UDim2.new(0, 10, 0.4, 0); bM.Text = "👑 MAXXJ900 👑"; bM.BackgroundColor3 = Color3.fromRGB(255, 215, 0); bM.Draggable = true; Instance.new("UICorner", bM)
+
+    local m = Instance.new("Frame", sg)
+    m.Size = UDim2.new(0, 160, 0, 240); m.Position = UDim2.new(0, 10, 0.4, 55); m.Visible = false; m.BackgroundColor3 = Color3.fromRGB(15, 15, 15); Instance.new("UICorner", m)
+
+    bM.MouseButton1Click:Connect(function() m.Visible = not m.Visible end)
+
+    local function createB(t, p, c)
+        local b = Instance.new("TextButton", m); b.Size = UDim2.new(0.9, 0, 0, 35); b.Position = p; b.Text = t; b.BackgroundColor3 = c; b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b); return b
+    end
+
+    local bH = createB("HITBOX: OFF", UDim2.new(0.05, 0, 0.05, 0), Color3.fromRGB(150, 0, 0))
+    local bA = createB("ANTI-HIT: OFF", UDim2.new(0.05, 0, 0.22, 0), Color3.fromRGB(80, 0, 150))
+    local bS = createB("SPEED: OFF", UDim2.new(0.05, 0, 0.39, 0), Color3.fromRGB(0, 100, 150))
+
+    bH.MouseButton1Click:Connect(function() _H = not _H; bH.Text = _H and "HITBOX: ON" or "HITBOX: OFF"; bH.BackgroundColor3 = _H and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(150, 0, 0) end)
+    bA.MouseButton1Click:Connect(function() _A = not _A; bA.Text = _A and "ANTI-HIT: ON" or "ANTI-HIT: OFF"; bA.BackgroundColor3 = _A and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(80, 0, 150) end)
+    bS.MouseButton1Click:Connect(function() _S = not _S; bS.Text = _S and "SPEED: ON" or "SPEED: OFF"; bS.BackgroundColor3 = _S and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(0, 100, 150) end)
+
+    _0xRS.Stepped:Connect(function()
+        if _H then
+            for _, p in pairs(_0xP:GetPlayers()) do
+                if p ~= _0xLP and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                    p.Character.HumanoidRootPart.Size = Vector3.new(25, 25, 25); p.Character.HumanoidRootPart.CanCollide, p.Character.HumanoidRootPart.Transparency = false, 1 
+                end
+            end
+        end
+        if _A and _0xLP.Character and _0xLP.Character:FindFirstChild("HumanoidRootPart") then
+            local h = _0xLP.Character.HumanoidRootPart
+            if math.abs(h.Velocity.X) > 60 or math.abs(h.Velocity.Z) > 60 then h.Velocity = Vector3.new(0, h.Velocity.Y, 0) end
+        end
+        if _S and _0xLP.Character and _0xLP.Character:FindFirstChild("Humanoid") then _0xLP.Character.Humanoid.WalkSpeed = 30 end
+    end)
+end
+
+Btn.MouseButton1Click:Connect(function()
+    if Box.Text == _0xK or Box.Text == _0xS:HttpGet("https://pastebin.com/raw/jwvUYUgf") then
+        _0xNOTIF(); Iniciar()
+    else
+        Btn.Text = "ERROR"; task.wait(1); Btn.Text = "VERIFICAR"
+    end
+end)
