@@ -8,7 +8,7 @@ local LocalPlayer = Players.LocalPlayer
 -- 1. LISTA DE PERMITIDOS (200 ESPACIOS)
 -- Escribe los nombres entre las comillas ""
 local _0xWhitelist = {
-    "MAXXJ900", "Cris1234", "Maxkj900", "", "", "", "", "", "", "",
+    "Maxkj900", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
     "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
