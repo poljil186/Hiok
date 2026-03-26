@@ -1,0 +1,204 @@
+-- ======================================================================
+-- 🤡 ROBA UN PAYASO - AUTO-HOPPER V6 (VERSIÓN PUTI / DELTA) 🤡
+-- Características: Lista Negra de Servidores Pobres, Anti-Crash, Ultra Rápido.
+-- ======================================================================
+
+local TeleportService = game:GetService("TeleportService")
+local HttpService = game:GetService("HttpService")
+local Workspace = game:GetService("Workspace")
+local Players = game:GetService("Players")
+local CoreGui = game:GetService("CoreGui")
+local LocalPlayer = Players.LocalPlayer
+
+local httprequest = (syn and syn.request) or (http and http.request) or http_request or (fluxus and fluxus.request) or request
+local isfile = isfile or function() return false end
+local readfile = readfile or function() return "" end
+local writefile = writefile or function() end
+
+-- ==========================================
+-- SISTEMA DE MEMORIA Y LISTA NEGRA (BLACKLIST)
+-- ==========================================
+local archivoEstado = "Puti_SniperEstado.txt"
+local archivoBlacklist = "Puti_BlacklistServers.txt"
+
+-- Crear archivos si no existen en tu celular
+if not isfile(archivoEstado) then writefile(archivoEstado, "OFF") end
+if not isfile(archivoBlacklist) then writefile(archivoBlacklist, "") end
+
+local function agregarABlacklist(jobId)
+    local actual = readfile(archivoBlacklist)
+    -- Evitar que el archivo pese demasiado (reinicia si es muy largo)
+    if string.len(actual) > 5000 then actual = "" end 
+    writefile(archivoBlacklist, actual .. jobId .. ",")
+end
+
+local function estaEnBlacklist(jobId)
+    local actual = readfile(archivoBlacklist)
+    return string.find(actual, jobId) ~= nil
+end
+
+-- ==========================================
+-- OBJETIVOS VIP (Solo se detiene por estos)
+-- ==========================================
+local NombresObjetivo = {
+    "Alfa Pacini", 
+    "Cocofanto Elefante", 
+    "Fishino Clownino", 
+    "Valerina Capuchina", 
+    "Los Fedecitos",
+    "Dragon Cannelloni"
+}
+
+-- ==========================================
+-- INTERFAZ MÓVIL OPTIMIZADA (LIGERA)
+-- ==========================================
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "PutiHopperGUI"
+ScreenGui.Parent = CoreGui
+
+local MainFrame = Instance.new("Frame")
+MainFrame.Parent = ScreenGui
+MainFrame.Size = UDim2.new(0, 250, 0, 150)
+MainFrame.Position = UDim2.new(0.5, -125, 0.8, -150) -- Más abajo para no estorbar
+MainFrame.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+MainFrame.Active = true
+Instance.new("UICorner", MainFrame).CornerRadius = UDim.new(0, 10)
+
+local StatusText = Instance.new("TextLabel")
+StatusText.Parent = MainFrame
+StatusText.Size = UDim2.new(1, 0, 0, 80)
+StatusText.Position = UDim2.new(0, 0, 0, 10)
+StatusText.BackgroundTransparency = 1
+StatusText.Text = "Puti-Hopper Listo.\nToca INICIAR."
+StatusText.TextColor3 = Color3.fromRGB(0, 255, 128)
+StatusText.Font = Enum.Font.GothamBold
+StatusText.TextSize = 14
+StatusText.TextWrapped = true
+
+local ToggleBtn = Instance.new("TextButton")
+ToggleBtn.Parent = MainFrame
+ToggleBtn.Size = UDim2.new(0.8, 0, 0, 45)
+ToggleBtn.Position = UDim2.new(0.1, 0, 0.6, 0)
+ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+ToggleBtn.Text = "INICIAR AUTO-HOP 🚀"
+ToggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+ToggleBtn.Font = Enum.Font.GothamBlack
+ToggleBtn.TextSize = 14
+Instance.new("UICorner", ToggleBtn).CornerRadius = UDim.new(0, 8)
+
+-- ==========================================
+-- LÓGICA DEL MOTOR DE SALTO (EL CEREBRO)
+-- ==========================================
+local function SaltoMortal()
+    StatusText.Text = "Buscando servidor limpio..."
+    if httprequest then
+        local url = "https://games.roblox.com/v1/games/" .. tostring(game.PlaceId) .. "/servers/Public?sortOrder=Desc&limit=100"
+        local success, response = pcall(function() return httprequest({Url = url, Method = "GET"}) end)
+
+        if success and response and response.Body then
+            local data = HttpService:JSONDecode(response.Body)
+            if data and data.data then
+                for _, server in pairs(data.data) do
+                    -- EL FILTRO MAESTRO: Que no sea tu server, que haya espacio, y QUE NO ESTÉ EN LA BLACKLIST
+                    if type(server) == "table" and server.id ~= game.JobId and server.playing < server.maxPlayers then
+                        if not estaEnBlacklist(server.id) then
+                            StatusText.Text = "¡Saltando a: " .. server.id:sub(1,6) .. "...!"
+                            TeleportService:TeleportToPlaceInstance(game.PlaceId, server.id, LocalPlayer)
+                            return
+                        end
+                    end
+                end
+            end
+        end
+    end
+    -- Si falla o todos están en blacklist, salta aleatorio
+    TeleportService:Teleport(game.PlaceId, LocalPlayer)
+end
+
+local function EscanearServidor()
+    StatusText.Text = "Escaneando mapa..."
+    local encontrado = false
+    local cualPayaso = ""
+
+    for _, objeto in pairs(Workspace:GetDescendants()) do
+        if objeto:IsA("Model") or objeto:IsA("Part") then
+            for _, nombreVIP in pairs(NombresObjetivo) do
+                if string.find(string.lower(objeto.Name), string.lower(nombreVIP)) then
+                    encontrado = true
+                    cualPayaso = nombreVIP
+                    break
+                end
+            end
+        end
+        if encontrado then break end
+    end
+
+    if encontrado then
+        -- ¡BINGO! Apaga el hopper
+        writefile(archivoEstado, "OFF")
+        ToggleBtn.Text = "DETENIDO"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 200, 0)
+        StatusText.Text = "¡SERVIDOR MILLONARIO!\nEncontrado: " .. cualPayaso .. " 🤑"
+        StatusText.TextColor3 = Color3.fromRGB(255, 255, 0)
+    else
+        -- Servidor basura. Lo mete a la blacklist y salta.
+        StatusText.Text = "Servidor Pobre. Metiendo a Blacklist..."
+        StatusText.TextColor3 = Color3.fromRGB(255, 50, 50)
+        agregarABlacklist(game.JobId)
+        wait(0.5) -- Pausa pequeñita para no crashear el celular
+        SaltoMortal()
+    end
+end
+
+-- ==========================================
+-- CONTROLES
+-- ==========================================
+ToggleBtn.Activated:Connect(function()
+    if readfile(archivoEstado) == "OFF" then
+        writefile(archivoEstado, "ON")
+        ToggleBtn.Text = "DETENER HOPPER 🛑"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        EscanearServidor()
+    else
+        writefile(archivoEstado, "OFF")
+        ToggleBtn.Text = "INICIAR AUTO-HOP 🚀"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
+        StatusText.Text = "Hopper Pausado."
+        StatusText.TextColor3 = Color3.fromRGB(0, 255, 128)
+    end
+end)
+
+-- AUTO-EJECUCIÓN (Si salta de server y estaba encendido, sigue escaneando)
+spawn(function()
+    wait(2.5) -- Espera a que el mapa de Roblox cargue los objetos
+    if readfile(archivoEstado) == "ON" then
+        ToggleBtn.Text = "DETENER HOPPER 🛑"
+        ToggleBtn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        EscanearServidor()
+    end
+end)
+
+-- Hacer que el menú se pueda arrastrar
+local UIS = game:GetService("UserInputService")
+local dragToggle, dragStart, dragPos
+
+MainFrame.InputBegan:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragToggle = true
+        dragStart = input.Position
+        dragPos = MainFrame.Position
+    end
+end)
+UIS.InputChanged:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseMovement or input.UserInputType == Enum.UserInputType.Touch then
+        if dragToggle then
+            local delta = input.Position - dragStart
+            MainFrame.Position = UDim2.new(dragPos.X.Scale, dragPos.X.Offset + delta.X, dragPos.Y.Scale, dragPos.Y.Offset + delta.Y)
+        end
+    end
+end)
+UIS.InputEnded:Connect(function(input)
+    if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
+        dragToggle = false
+    end
+end)
