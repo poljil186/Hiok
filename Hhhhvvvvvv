@@ -1,0 +1,92 @@
+-- [[ VERSIÓN FINAL PRIVADA - Maxkj900 ]] --
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- LISTA DE PERMITIDOS
+local _0xWhitelist = {
+    "Maxkj900", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+}
+
+local _0xK = "\67\114\105\115\49\50\51\52\64"
+local _0xAcceso = false
+
+if LocalPlayer.Name == "Maxkj900" then
+    _0xAcceso = true
+else
+    for _, nombre in pairs(_0xWhitelist) do
+        if nombre ~= "" and LocalPlayer.Name == nombre then
+            _0xAcceso = true
+            break
+        end
+    end
+end
+
+if not _0xAcceso then
+    LocalPlayer:Kick("MAXXJ900: Acceso Denegado.")
+    return 
+end
+
+local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 10)
+
+local function GetK()
+    local s, r = pcall(function() return game:HttpGet("https://pastebin.com/raw/jwvUYUgf") end)
+    return s and r:gsub("%s+", "") or "ERROR"
+end
+
+pcall(function()
+    if PlayerGui:FindFirstChild("LoginSystem") then PlayerGui.LoginSystem:Destroy() end
+    if PlayerGui:FindFirstChild("MenuSlap") then PlayerGui.MenuSlap:Destroy() end
+end)
+
+local LoginGui = Instance.new("ScreenGui", PlayerGui); LoginGui.Name = "LoginSystem"
+local Frame = Instance.new("Frame", LoginGui)
+Frame.Size = UDim2.new(0, 260, 0, 160); Frame.Position = UDim2.new(0.5, -130, 0.4, 0); Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20); Frame.Draggable, Frame.Active = true, true
+Instance.new("UICorner", Frame); Instance.new("UIStroke", Frame).Color = Color3.fromRGB(255, 215, 0)
+
+local Box = Instance.new("TextBox", Frame)
+Box.Size = UDim2.new(0.8, 0, 0.25, 0); Box.Position = UDim2.new(0.1, 0, 0.35, 0); Box.PlaceholderText = "Escribe la clave..."; Box.BackgroundColor3 = Color3.fromRGB(40, 40, 40); Box.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", Box)
+
+local Btn = Instance.new("TextButton", Frame)
+Btn.Size = UDim2.new(0.6, 0, 0.25, 0); Btn.Position = UDim2.new(0.2, 0, 0.68, 0); Btn.Text = "VERIFICAR"; Btn.BackgroundColor3 = Color3.fromRGB(0, 180, 0); Btn.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", Btn)
+
+local function Iniciar()
+    LoginGui:Destroy()
+    local _G_HB, _G_AH, _G_SP = false, false, false
+    local speedVal = 16 
+    
+    local sg = Instance.new("ScreenGui", PlayerGui); sg.Name = "MenuSlap"; sg.ResetOnSpawn = false
+    local bM = Instance.new("TextButton", sg)
+    bM.Size = UDim2.new(0, 140, 0, 45); bM.Position = UDim2.new(0, 10, 0.4, 0); bM.Text = "👑 PREMIO PRO 👑"; bM.BackgroundColor3 = Color3.fromRGB(255, 215, 0); bM.Draggable = true; Instance.new("UICorner", bM)
+
+    local m = Instance.new("Frame", sg)
+    m.Size = UDim2.new(0, 160, 0, 240); m.Position = UDim2.new(0, 10, 0.4, 55); m.Visible = false; m.BackgroundColor3 = Color3.fromRGB(15, 15, 15); Instance.new("UICorner", m)
+    bM.MouseButton1Click:Connect(function() m.Visible = not m.Visible end)
+
+    local function createB(t, p, c)
+        local b = Instance.new("TextButton", m); b.Size = UDim2.new(0.9, 0, 0, 35); b.Position = p; b.Text = t; b.BackgroundColor3 = c; b.TextColor3 = Color3.new(1, 1, 1); b.Font = Enum.Font.GothamBold; Instance.new("UICorner", b); return b
+    end
+
+    local bH = createB("HITBOX: OFF", UDim2.new(0.05, 0, 0.05, 0), Color3.fromRGB(150, 0, 0))
+    local bA = createB("ANTI-HIT: OFF", UDim2.new(0.05, 0, 0.22, 0), Color3.fromRGB(80, 0, 150))
+    local bS = createB("SPEED: OFF", UDim2.new(0.05, 0, 0.39, 0), Color3.fromRGB(0, 100, 150))
+
+    local btnMinus = Instance.new("TextButton", m)
+    btnMinus.Size = UDim2.new(0.25, 0, 0, 30); btnMinus.Position = UDim2.new(0.05, 0, 0.56, 0); btnMinus.Text = "-"; btnMinus.BackgroundColor3 = Color3.fromRGB(200, 50, 50); btnMinus.TextColor3 = Color3.new(1,1,1); Instance.new("UICorner", btnMinus)
+
+    local lblSpeed = Instance.new("TextLabel", m)
+    lblSpeed.Size = UDim2.new(0.35, 0, 0, 30); lblSpeed.Position = UDim2.new(0.325, 0, 0.56, 0); lblSpeed.Text = tostring(speedVal); lblSpeed.BackgroundColor3 = Color3.fromRGB(40, 40, 40); lblSpeed.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", lblSpeed)
+
+    local btnPlus = Instance.new("TextButton", m)
+    btnPlus.Size = UDim2.new(0.25, 0, 0, 30); btnPlus.Position = UDim2.new(0.7, 0, 0.56
