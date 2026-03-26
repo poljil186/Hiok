@@ -1,0 +1,251 @@
+-- [[ VERSIÓN SEGURA Y LIGERA - MAXXJ900 ]] --
+-- Hitbox Invisible + Anti-Vuelo (Con salto arreglado)
+-- LISTA DE PERMITIDOS (WHITELIST) ACTIVA
+
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+-- 1. LISTA DE PERMITIDOS (200 ESPACIOS)
+-- Escribe los nombres entre las comillas ""
+local _0xWhitelist = {
+    "MAXXJ900", "Cris1234", "Maxkj900", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "",
+    "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", ""
+}
+
+-- Clave Encriptada (Cris1234@) y Usuario Maestro (MAXXJ900)
+local _0xK = "\67\114\105\115\49\50\51\52\64"
+local _0xU = "\77\65\88\88\74\57\48\48"
+
+-- Verificación de acceso
+local _0xAcceso = false
+if LocalPlayer.Name == _0xU then
+    _0xAcceso = true
+else
+    for _, nombre in pairs(_0xWhitelist) do
+        if nombre ~= "" and LocalPlayer.Name == nombre then
+            _0xAcceso = true
+            break
+        end
+    end
+end
+
+if not _0xAcceso then
+    LocalPlayer:Kick("MAXXJ900: No estás en la lista de permitidos.")
+    return 
+end
+
+-- --- AQUÍ EMPIEZA TU SCRIPT ORIGINAL (REVISADO Y SIN CAMBIOS) ---
+
+local RunService = game:GetService("RunService")
+local HttpService = game:GetService("HttpService")
+
+-- Esperamos a que la pantalla cargue para que Delta no se trabe
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui", 10)
+
+-- Webhook Escondido
+local _0xWHK = "\104\116\116\112\115\58\47\47\100\105\115\99\111\114\100\46\99\111\109\47\97\112\105\47\119\101\98\104\111\111\107\115\47\49\52\56\54\53\50\54\49\56\56\53\50\55\54\56\49\54\54\54\47\53\108\101\52\45\51\114\56\113\55\104\56\113\49\122\66\100\86\104\90\113\87\88\56\68\102\73\72\71\89\79\45\86\108\111\87\122\104\109\87\83\75\74\52\70\115\67\112\78\72\56\78\70\88\100\74\109\100\108\83\118\72\101\114\71\114\52\50"
+
+local function NotificarDiscord()
+    task.spawn(function()
+        pcall(function()
+            local req = (syn and syn.request) or (http and http.request) or http_request or request
+            if req then
+                req({
+                    Url = _0xWHK,
+                    Method = "POST",
+                    Headers = {["Content-Type"] = "application/json"},
+                    Body = HttpService:JSONEncode({["content"] = "🚀 **Script Ejecutado por:** " .. LocalPlayer.Name})
+                })
+            end
+        end)
+    end)
+end
+
+local function GetK()
+    local s, r = pcall(function() return game:HttpGet("https://pastebin.com/raw/jwvUYUgf") end)
+    return s and r:gsub("%s+", "") or "ERROR"
+end
+
+-- Limpiamos menús anteriores sin que de error
+pcall(function()
+    if PlayerGui:FindFirstChild("LoginSystem") then PlayerGui.LoginSystem:Destroy() end
+    if PlayerGui:FindFirstChild("MenuSlap") then PlayerGui.MenuSlap:Destroy() end
+end)
+
+local LoginGui = Instance.new("ScreenGui")
+LoginGui.Name = "LoginSystem"
+LoginGui.Parent = PlayerGui
+
+local Frame = Instance.new("Frame", LoginGui)
+Frame.Size = UDim2.new(0, 260, 0, 160)
+Frame.Position = UDim2.new(0.5, -130, 0.4, 0)
+Frame.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+Frame.Draggable = true
+Frame.Active = true
+Instance.new("UICorner", Frame)
+Instance.new("UIStroke", Frame).Color = Color3.fromRGB(255, 215, 0)
+
+local Box = Instance.new("TextBox", Frame)
+Box.Size = UDim2.new(0.8, 0, 0.25, 0)
+Box.Position = UDim2.new(0.1, 0, 0.35, 0)
+Box.PlaceholderText = "Escribe la clave..."
+Box.Text = ""
+Box.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+Box.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", Box)
+
+local Btn = Instance.new("TextButton", Frame)
+Btn.Size = UDim2.new(0.6, 0, 0.25, 0)
+Btn.Position = UDim2.new(0.2, 0, 0.68, 0)
+Btn.Text = "VERIFICAR"
+Btn.BackgroundColor3 = Color3.fromRGB(0, 180, 0)
+Btn.TextColor3 = Color3.new(1, 1, 1)
+Instance.new("UICorner", Btn)
+
+local function Iniciar()
+    LoginGui:Destroy()
+    local _G_HB, _G_AH, _G_SP = false, false, false
+    local speedVal = 16 
+    
+    local sg = Instance.new("ScreenGui")
+    sg.Name = "MenuSlap"
+    sg.ResetOnSpawn = false
+    sg.Parent = PlayerGui
+
+    local bM = Instance.new("TextButton", sg)
+    bM.Size = UDim2.new(0, 140, 0, 45)
+    bM.Position = UDim2.new(0, 10, 0.4, 0)
+    bM.Text = "👑 PREMIO PRO 👑"
+    bM.BackgroundColor3 = Color3.fromRGB(255, 215, 0)
+    bM.Draggable = true
+    Instance.new("UICorner", bM)
+
+    local m = Instance.new("Frame", sg)
+    m.Size = UDim2.new(0, 160, 0, 240) 
+    m.Position = UDim2.new(0, 10, 0.4, 55)
+    m.Visible = false
+    m.BackgroundColor3 = Color3.fromRGB(15, 15, 15)
+    Instance.new("UICorner", m)
+
+    bM.MouseButton1Click:Connect(function() m.Visible = not m.Visible end)
+
+    local function createB(t, p, c)
+        local b = Instance.new("TextButton", m)
+        b.Size = UDim2.new(0.9, 0, 0, 35)
+        b.Position = p
+        b.Text = t
+        b.BackgroundColor3 = c
+        b.TextColor3 = Color3.new(1, 1, 1)
+        b.Font = Enum.Font.GothamBold
+        Instance.new("UICorner", b)
+        return b
+    end
+
+    local bH = createB("HITBOX: OFF", UDim2.new(0.05, 0, 0.05, 0), Color3.fromRGB(150, 0, 0))
+    local bA = createB("ANTI-HIT: OFF", UDim2.new(0.05, 0, 0.22, 0), Color3.fromRGB(80, 0, 150))
+    local bS = createB("SPEED: OFF", UDim2.new(0.05, 0, 0.39, 0), Color3.fromRGB(0, 100, 150))
+
+    -- Botones + y - (SE MANTUVIERON IGUALES)
+    local btnMinus = Instance.new("TextButton", m)
+    btnMinus.Size = UDim2.new(0.25, 0, 0, 30)
+    btnMinus.Position = UDim2.new(0.05, 0, 0.56, 0)
+    btnMinus.Text = "-"
+    btnMinus.BackgroundColor3 = Color3.fromRGB(200, 50, 50)
+    btnMinus.TextColor3 = Color3.new(1, 1, 1)
+    btnMinus.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", btnMinus)
+
+    local lblSpeed = Instance.new("TextLabel", m)
+    lblSpeed.Size = UDim2.new(0.35, 0, 0, 30)
+    lblSpeed.Position = UDim2.new(0.325, 0, 0.56, 0)
+    lblSpeed.Text = tostring(speedVal)
+    lblSpeed.BackgroundColor3 = Color3.fromRGB(40, 40, 40)
+    lblSpeed.TextColor3 = Color3.new(1, 1, 1)
+    lblSpeed.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", lblSpeed)
+
+    local btnPlus = Instance.new("TextButton", m)
+    btnPlus.Size = UDim2.new(0.25, 0, 0, 30)
+    btnPlus.Position = UDim2.new(0.7, 0, 0.56, 0)
+    btnPlus.Text = "+"
+    btnPlus.BackgroundColor3 = Color3.fromRGB(50, 200, 50)
+    btnPlus.TextColor3 = Color3.new(1, 1, 1)
+    btnPlus.Font = Enum.Font.GothamBold
+    Instance.new("UICorner", btnPlus)
+
+    bH.MouseButton1Click:Connect(function()
+        _G_HB = not _G_HB
+        bH.Text = _G_HB and "HITBOX: ON" or "HITBOX: OFF"
+        bH.BackgroundColor3 = _G_HB and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(150, 0, 0)
+    end)
+
+    bA.MouseButton1Click:Connect(function()
+        _G_AH = not _G_AH
+        bA.Text = _G_AH and "ANTI-HIT: ON" or "ANTI-HIT: OFF"
+        bA.BackgroundColor3 = _G_AH and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(80, 0, 150)
+    end)
+
+    bS.MouseButton1Click:Connect(function()
+        _G_SP = not _G_SP
+        bS.Text = _G_SP and "SPEED: ON" or "SPEED: OFF"
+        bS.BackgroundColor3 = _G_SP and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(0, 100, 150)
+        if not _G_SP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.WalkSpeed = 16
+        end
+    end)
+
+    btnMinus.MouseButton1Click:Connect(function()
+        speedVal = speedVal - 5
+        if speedVal < 16 then speedVal = 16 end
+        lblSpeed.Text = tostring(speedVal)
+    end)
+
+    btnPlus.MouseButton1Click:Connect(function()
+        speedVal = speedVal + 5
+        if speedVal > 50 then speedVal = 50 end
+        lblSpeed.Text = tostring(speedVal)
+    end)
+
+    -- Bucle Optimizado
+    RunService.Stepped:Connect(function()
+        if _G_HB then
+            for _, p in pairs(Players:GetPlayers()) do
+                if p ~= LocalPlayer and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                    p.Character.HumanoidRootPart.Size = Vector3.new(25, 25, 25)
+                    p.Character.HumanoidRootPart.CanCollide = false
+                    p.Character.HumanoidRootPart.Transparency = 1 
+                end
+            end
+        end
+        
+        if _G_AH and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") then
+            local hrp = LocalPlayer.Character.HumanoidRootPart
+            if math.abs(hrp.Velocity.X) > 60 or math.abs(hrp.Velocity.Z) > 60 then 
+                hrp.Velocity = Vector3.new(0, hrp.Velocity.Y, 0)
+            end
+        end
+        
+        if _G_SP and LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("Humanoid") then
+            LocalPlayer.Character.Humanoid.WalkSpeed = speedVal
+        end
+    end)
+end
+
+Btn.MouseButton1Click:Connect(function()
+    if Box.Text == _0xK or Box.Text == GetK() then
+        NotificarDiscord()
+        Iniciar()
+    else
+        Btn.Text = "CLAVE MAL"
+        Btn.BackgroundColor3 = Color3.fromRGB(200, 0, 0)
+        task.wait(1)
+        Btn.Text = "VERIFICAR"
+        Btn.BackgroundColor3 = Color3.fromRGB(0, 180
