@@ -1,0 +1,68 @@
+-- [[ VERSIÓN MAXXJ900 - FULL CONTROL ]] --
+local _0xS = game
+local _0xP = _0xS:GetService("\80\108\97\121\101\114\115")
+local _0xLP = _0xP["\76\111\99\97\108\80\108\97\121\101\114"]
+
+-- 1. LISTA NEGRA (200 ESPACIOS)
+local _0xBL = {"","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",""}
+
+for _, v in pairs(_0xBL) do
+    if v ~= "" and _0xLP.Name == v then _0xLP:Kick("\65\99\99\101\115\111\32\68\101\110\101\103\97\100\111"); return end
+end
+
+-- 2. VARIABLES Y CLAVE INVISIBLE
+local _0xK = "\67\114\105\115\49\50\51\52\64" -- Cris1234@
+local _0xRS = _0xS:GetService("\82\117\110\83\101\114\118\105\99\101")
+local _0xPG = _0xLP:WaitForChild("PlayerGui")
+
+local function Iniciar()
+    local _H, _S = false, false
+    local speedVal = 16 
+    
+    local sg = Instance.new("ScreenGui", _0xPG)
+    sg.Name = "MenuSlap"; sg.ResetOnSpawn = false
+
+    local bM = Instance.new("TextButton", sg)
+    bM.Size = UDim2.new(0, 140, 0, 45); bM.Position = UDim2.new(0, 10, 0.4, 0); bM.Text = "👑 MAXXJ900 👑"; bM.BackgroundColor3 = Color3.fromRGB(255, 215, 0); bM.Draggable = true; Instance.new("UICorner", bM)
+
+    local m = Instance.new("Frame", sg)
+    m.Size = UDim2.new(0, 160, 0, 240); m.Position = UDim2.new(0, 10, 0.4, 55); m.Visible = false; m.BackgroundColor3 = Color3.fromRGB(15, 15, 15); Instance.new("UICorner", m)
+
+    bM.MouseButton1Click:Connect(function() m.Visible = not m.Visible end)
+
+    local function createB(t, p, c)
+        local b = Instance.new("TextButton", m); b.Size = UDim2.new(0.9, 0, 0, 35); b.Position = p; b.Text = t; b.BackgroundColor3 = c; b.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", b); return b
+    end
+
+    local bH = createB("HITBOX: OFF", UDim2.new(0.05, 0, 0.05, 0), Color3.fromRGB(150, 0, 0))
+    local bS = createB("SPEED: OFF", UDim2.new(0.05, 0, 0.25, 0), Color3.fromRGB(0, 100, 150))
+
+    -- BOTONES DE VELOCIDAD (+ y -)
+    local btnMinus = Instance.new("TextButton", m)
+    btnMinus.Size = UDim2.new(0.25, 0, 0, 30); btnMinus.Position = UDim2.new(0.05, 0, 0.45, 0); btnMinus.Text = "-"; btnMinus.BackgroundColor3 = Color3.fromRGB(200, 50, 50); Instance.new("UICorner", btnMinus)
+
+    local lblSpeed = Instance.new("TextLabel", m)
+    lblSpeed.Size = UDim2.new(0.35, 0, 0, 30); lblSpeed.Position = UDim2.new(0.325, 0, 0.45, 0); lblSpeed.Text = tostring(speedVal); lblSpeed.BackgroundColor3 = Color3.fromRGB(40, 40, 40); lblSpeed.TextColor3 = Color3.new(1, 1, 1); Instance.new("UICorner", lblSpeed)
+
+    local btnPlus = Instance.new("TextButton", m)
+    btnPlus.Size = UDim2.new(0.25, 0, 0, 30); btnPlus.Position = UDim2.new(0.7, 0, 0.45, 0); btnPlus.Text = "+"; btnPlus.BackgroundColor3 = Color3.fromRGB(50, 200, 50); Instance.new("UICorner", btnPlus)
+
+    btnMinus.MouseButton1Click:Connect(function() speedVal = math.max(16, speedVal - 5); lblSpeed.Text = tostring(speedVal) end)
+    btnPlus.MouseButton1Click:Connect(function() speedVal = math.min(100, speedVal + 5); lblSpeed.Text = tostring(speedVal) end)
+
+    bH.MouseButton1Click:Connect(function() _H = not _H; bH.Text = _H and "HITBOX: ON" or "HITBOX: OFF"; bH.BackgroundColor3 = _H and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(150, 0, 0) end)
+    bS.MouseButton1Click:Connect(function() _S = not _S; bS.Text = _S and "SPEED: ON" or "SPEED: OFF"; bS.BackgroundColor3 = _S and Color3.fromRGB(0, 150, 0) or Color3.fromRGB(0, 100, 150) end)
+
+    _0xRS.Stepped:Connect(function()
+        if _H then
+            for _, p in pairs(_0xP:GetPlayers()) do
+                if p ~= _0xLP and p.Character and p.Character:FindFirstChild("HumanoidRootPart") then
+                    p.Character.HumanoidRootPart.Size = Vector3.new(25, 25, 25); p.Character.HumanoidRootPart.CanCollide, p.Character.HumanoidRootPart.Transparency = false, 0.8 
+                end
+            end
+        end
+        if _S and _0xLP.Character and _0xLP.Character:FindFirstChild("Humanoid") then _0xLP.Character.Humanoid.WalkSpeed = speedVal end
+    end)
+end
+
+Iniciar() -- Ejecución directa para que lo pruebes ya.
